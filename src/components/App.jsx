@@ -33,6 +33,39 @@ function App() {
       });
   }
 
+  function handleLike(toy) {
+    const updatedToy = {
+      ...toy,
+      likes: toy.likes + 1,
+    };
+
+    fetch(`http://localhost:3001/toys/${toy.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ likes: updatedToy.likes }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setToys((currentToys) =>
+          currentToys.map((currentToy) =>
+            currentToy.id === toy.id ? data : currentToy
+          )
+        );
+      });
+  }
+
+  function handleDonate(toy) {
+    fetch(`http://localhost:3001/toys/${toy.id}`, {
+      method: "DELETE",
+    }).then(() => {
+      setToys((currentToys) =>
+        currentToys.filter((currentToy) => currentToy.id !== toy.id)
+      );
+    });
+  }
+
   return (
     <>
       <Header />
@@ -40,10 +73,13 @@ function App() {
       <div className="buttonContainer">
         <button onClick={handleClick}>Add a Toy</button>
       </div>
-      <ToyContainer toys={toys} />
+      <ToyContainer
+        toys={toys}
+        onLike={handleLike}
+        onDonate={handleDonate}
+      />
     </>
   );
 }
 
 export default App;
-

@@ -1,10 +1,11 @@
 
 import React from "react";
 
-function ToyCard({ toy }) {
+function ToyCard({ toy, onLike, onDonate }) {
   return (
     <div className="card" data-testid="toy-card">
       <h2>{toy.name}</h2>
+
       <img
         src={toy.image}
         alt={toy.name}
@@ -13,13 +14,21 @@ function ToyCard({ toy }) {
 
       <p>{`${toy.likes} Likes `}</p>
 
+      <button
+        className="like-btn"
+        onClick={() => onLike(toy)}
+      >
+        Like {"<3"}
+      </button>
 
-
-      <button className="like-btn">Like {"<3"}</button>
-      <button className="del-btn">Donate to GoodWill</button>
+      <button
+        className="del-btn"
+        onClick={() => onDonate(toy)}
+      >
+        Donate to GoodWill
+      </button>
     </div>
   );
 }
 
 export default ToyCard;
-
